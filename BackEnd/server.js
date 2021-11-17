@@ -2,8 +2,15 @@ const express = require('express')
 const app = express()
 const port = 4000
 const bodyParser = require('body-parser')
+
+//**** */
+global.TextEncoder = require("util").TextEncoder; 
+global.TextDecoder = require("util").TextDecoder;
+//**** */
+
 // getting-started.js
 const mongoose = require('mongoose');
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -106,6 +113,16 @@ app.post('/api/movies', (req,res)=>{
            res.json(data);
        })
 
+   })
+
+   //update movies when they're edited
+   app.put('/api/movies/:id', (req, res)=>{
+    console.log('Updating: '+req.params.id)
+    
+    movieModel.findByIdAndUpdate(req.params.id, req.body, {new:true},
+    (err, data)=>{
+    res.json(data);
+    })
    })
 
 app.listen(port, () => {
